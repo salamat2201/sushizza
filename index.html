@@ -578,25 +578,25 @@
             price: "2350₸",
             ingredients:
               "Рис, Нори, Творожный сыр, Огурец, Лосось, Стружка тунца",
-            image: "images/bonita.jpg",
+            image: "images/bonita.JPG",
           },
           {
             name: "Капа хосомаки",
             price: "1090₸",
             ingredients: "Рис, Нори, Огурец, Кунжут",
-            image: "images/kapa.jpg",
+            image: "images/kapa.JPG",
           },
           {
             name: "Сяке хосомаки",
             price: "1290₸",
             ingredients: "Рис, Нори, Лосось",
-            image: "images/sake.jpg",
+            image: "images/sake.JPG",
           },
           {
             name: "Эби хосомаки",
             price: "1340₸",
             ingredients: "Рис, Нори, Креветки",
-            image: "images/ebi.jpg",
+            image: "images/ebi.JPG",
           },
           {
             name: "Cheese ролл",
@@ -677,7 +677,7 @@
             price: "3090₸",
             ingredients:
               "Рис, Нори, Творожный сыр, Лосось, Лук зелень, Соус спайс, Кляр, Панко",
-            image: "images/kamikaze.jpg",
+            image: "images/kamikaze.JPG",
           },
           {
             name: "Hello Kitty",
@@ -691,7 +691,7 @@
             price: "2750₸",
             ingredients:
               "Рис, Нори, Творожный сыр, Курица филе, Айсберг, Кляр, Панко, Соус тар-тар",
-            image: "images/caesar-fried.jpg",
+            image: "images/caesar-fried.JPG",
           },
         ],
         sushi: [
@@ -946,6 +946,7 @@
                                 product.image
                                 ? `<img 
                                     src="${product.image}" 
+                                    alt="${product.image}" 
                                     class="product-image"
                                     style="${isDrink ? 'width:400px; height:400px; object-fit:cover;' : ''}"
                                     >`
