@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sushizza - Доставка суши и роллов</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #f8f9fa;
+        color: #333;
+      }
+
+      .header {
+        background: white;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .logo {
+        font-size: 32px;
+        font-weight: bold;
+        color: #e74c3c;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+
+      .address {
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-top: 8px;
+        font-weight: 500;
+      }
+
+      .category-tabs {
+        display: flex;
+        gap: 10px;
+        padding: 20px;
+        overflow-x: auto;
+        background: white;
+        position: sticky;
+        top: 102px;
+        z-index: 99;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .category-tab {
+        background: #f8f9fa;
+        border: 2px solid transparent;
+        border-radius: 25px;
+        padding: 12px 24px;
+        cursor: pointer;
+        white-space: nowrap;
+        font-weight: 500;
+        transition: all 0.3s;
+        font-size: 14px;
+      }
+
+      .category-tab.active {
+        background: #e74c3c;
+        color: white;
+        border-color: #e74c3c;
+      }
+
+      .category-tab:hover:not(.active) {
+        background: #e8e8e8;
+      }
+
+      .content {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .category-section {
+        margin-bottom: 40px;
+      }
+
+      .category-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #2c3e50;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: #f0f0f0;
+      }
+
+      .product-info {
+        padding: 16px;
+      }
+
+      .product-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #2c3e50;
+      }
+
+      .product-ingredients {
+        font-size: 13px;
+        color: #7f8c8d;
+        margin-bottom: 12px;
+        line-height: 1.5;
+      }
+
+      .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .product-price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #e74c3c;
+      }
+
+      .add-button {
+        background: #27ae60;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        font-weight: 300;
+      }
+
+      .add-button:hover {
+        background: #229954;
+        transform: scale(1.1);
+      }
+
+      .add-button:active {
+        transform: scale(0.95);
+      }
+
+      .whatsapp-float {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s;
+      }
+
+      .whatsapp-float:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .whatsapp-float svg {
+        width: 35px;
+        height: 35px;
+        fill: white;
+      }
+
+      .gis-float {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.3s;
+      }
+
+      .gis-float:hover {
+        transform: scale(1.1);
+      }
+
+      .gis-float svg {
+        width: 32px;
+        height: 32px;
+        fill: white;
+      }
+
+      .footer {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        color: white;
+        padding: 50px 20px 30px;
+        margin-top: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #e74c3c, #ff6b35, #e74c3c);
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-section {
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .footer-section h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #fff;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .footer-section p,
+      .footer-section a {
+        font-size: 15px;
+        line-height: 2;
+        color: #b8c5d6;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s;
+      }
+
+      .footer-section a {
+        position: relative;
+        padding-left: 20px;
+      }
+
+      .footer-section a::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+
+      .footer-section a:hover {
+        color: #ff6b35;
+        padding-left: 25px;
+      }
+
+      .footer-section a:hover::before {
+        opacity: 1;
+        left: 5px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 12px 0;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+
+      .contact-item:hover {
+        background: rgba(255, 107, 53, 0.1);
+        transform: translateX(5px);
+      }
+
+      .contact-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #e74c3c, #ff6b35);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .map-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 15px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #ff6b35, #e74c3c);
+        border-radius: 25px;
+        color: white !important;
+        font-weight: 600;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      }
+
+      .map-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        padding-left: 20px !important;
+      }
+
+      .map-link::before {
+        display: none;
+      }
+
+      .working-hours {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 12px;
+        border-left: 4px solid #ff6b35;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #7f8fa6;
+        font-size: 14px;
+      }
+
+      .footer-logo {
+        font-size: 28px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #e74c3c, #ff6b35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 15px;
+      }
+
+      @media (max-width: 768px) {
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .category-title {
+          font-size: 24px;
+        }
+
+        .logo {
+          font-size: 28px;
+        }
+
+        .whatsapp-float {
+          bottom: 20px;
+          right: 20px;
+          width: 56px;
+          height: 56px;
+        }
+
+        .gis-float {
+          bottom: 85px;
+          right: 20px;
+          width: 56px;
+          height: 56px;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">🍣 SUSHIZZA</div>
+      <div class="address">📍 г. Актобе, ул. Мустафы Шокая 27</div>
+    </div>
+
+    <div class="category-tabs" id="categoryTabs">
+      <div class="category-tab active" data-category="all">Все</div>
+      <div class="category-tab" data-category="cold">🧊 Холодные роллы</div>
+      <div class="category-tab" data-category="baked">🔥 Запеченные роллы</div>
+      <div class="category-tab" data-category="fried">🍤 Жареные роллы</div>
+      <div class="category-tab" data-category="sushi">🍱 Суши</div>
+      <div class="category-tab" data-category="pizza">🍕 Пицца</div>
+      <div class="category-tab" data-category="sets">🎁 Сеты</div>
+      <div class="category-tab" data-category="snacks">🍟 Снэки</div>
+      <div class="category-tab" data-category="drinks">🥤 Напитки</div>
+    </div>
+
+    <div class="content" id="content"></div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">🍣 SUSHIZZA</div>
+          <p>Доставка вкусных суши и роллов в Актобе</p>
+          <p style="margin-top: 15px; color: #7f8fa6">
+            Мы готовим с душой и доставляем с улыбкой!
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>📍 Наш адрес</h3>
+          <p style="font-size: 16px; color: #fff; margin-bottom: 10px">
+            г. Актобе
+          </p>
+          <p style="color: #b8c5d6">ул. Мустафы Шокая 27</p>
+          <a
+            href="https://2gis.kz/aktobe/geo/70030076651218529/57.139108,50.270921"
+            target="_blank"
+            class="map-link"
+          >
+            📍 Открыть карту
+          </a>
+        </div>
+
+        <div class="footer-section">
+          <h3>📞 Контакты</h3>
+          <div class="contact-item">
+            <div class="contact-icon">📱</div>
+            <a href="tel:+77761587973" style="padding-left: 0"
+              >+7 (776) 158-79-73</a
+            >
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">💬</div>
+            <a
+              href="https://wa.me/77761587973"
+              target="_blank"
+              style="padding-left: 0"
+            >
+              Написать в WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h3>⏰ Режим работы</h3>
+          <div class="working-hours">
+            <p style="color: #fff; font-weight: 600; margin-bottom: 8px">
+              Ежедневно
+            </p>
+            <p style="font-size: 18px; color: #ff6b35; font-weight: 700">
+              11:00 - 23:00
+            </p>
+            <p style="margin-top: 10px; font-size: 13px">
+              Принимаем заказы онлайн
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024 SUSHIZZA. Все права защищены. Сделано с ❤️ в Актобе</p>
+      </div>
+    </footer>
+
+    <a
+      href="https://2gis.kz/aktobe/geo/70030076651218529/57.139108,50.270921"
+      target="_blank"
+      class="gis-float"
+      title="Открыть в 2ГИС"
+    >
+ <img width="55px" src="./images/2gis.png"></img>
+    </a>
+
+    <a
+      href="https://wa.me/77761587973"
+      target="_blank"
+      class="whatsapp-float"
+      id="whatsappBtn"
+    >
+      <svg viewBox="0 0 32 32">
+        <path
+          d="M16 0C7.164 0 0 7.163 0 16c0 2.825 0.737 5.607 2.138 8.099L0.747 30.88c-0.151 0.426 0.231 0.848 0.672 0.737l6.384-1.603C10.202 31.34 13.067 32 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-5.037-0.725-7.186-2.092l-0.461-0.294-4.696 1.179 1.192-4.459-0.347-0.525C2.803 21.052 2 18.562 2 16 2 8.268 8.268 2 16 2s14 6.268 14 14-6.268 13.333-14 13.333zm7.784-9.826c-0.428-0.214-2.528-1.247-2.921-1.39-0.393-0.143-0.679-0.214-0.964 0.214-0.286 0.428-1.107 1.39-1.357 1.676-0.25 0.286-0.5 0.321-0.929 0.107-0.428-0.214-1.808-0.667-3.443-2.126-1.272-1.135-2.132-2.537-2.382-2.965-0.25-0.428-0.027-0.659 0.188-0.872 0.192-0.192 0.428-0.5 0.643-0.75 0.214-0.25 0.286-0.428 0.428-0.714 0.143-0.286 0.071-0.536-0.036-0.75-0.107-0.214-0.964-2.322-1.321-3.179-0.348-0.835-0.701-0.722-0.964-0.735-0.25-0.012-0.536-0.015-0.821-0.015s-0.75 0.107-1.143 0.536c-0.393 0.428-1.5 1.464-1.5 3.571s1.536 4.143 1.75 4.429c0.214 0.286 3.018 4.607 7.313 6.461 1.022 0.441 1.821 0.705 2.443 0.903 1.029 0.327 1.965 0.281 2.705 0.17 0.825-0.123 2.528-1.036 2.886-2.036 0.357-1 0.357-1.857 0.25-2.036-0.107-0.179-0.393-0.286-0.821-0.5z"
+        />
+      </svg>
+    </a>
+
+    <script>
+      const products = {
+        cold: [
+          {
+            name: "Филадельфия",
+            price: "2550₸",
+            ingredients: "Рис, Нори, Творожный сыр, Лосось",
+            image: "images/philadelphia.jpg",
+          },
+          {
+            name: "Филадельфия Lux",
+            price: "3350₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Авокадо, Манго, Лосось, Спайси соус, Тобико красный, Ореховая стружка",
+            image: "images/philadelphia-lux.jpg",
+          },
+          {
+            name: "Кремо ролл",
+            price: "2400₸",
+            ingredients: "Рис, Нори, Творожный сыр, Манго, Черная икра",
+            image: "images/cremo.jpg",
+          },
+          {
+            name: "Калифорния с лососем",
+            price: "2800₸",
+            ingredients: "Рис, Нори, Лосось, Авокадо, Креветки, Тобико",
+            image: "images/california.jpg",
+          },
+          {
+            name: "Цезарь ролл",
+            price: "2300₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Айсберг, Помидоры, Куриный филе, Панко, Соус тар-тар, Пармезан",
+            image: "images/caesar.jpg",
+          },
+          {
+            name: "Бонита ролл",
+            price: "2350₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Огурец, Лосось, Стружка тунца",
+            image: "images/bonita.jpg",
+          },
+          {
+            name: "Капа хосомаки",
+            price: "1090₸",
+            ingredients: "Рис, Нори, Огурец, Кунжут",
+            image: "images/kapa.jpg",
+          },
+          {
+            name: "Сяке хосомаки",
+            price: "1290₸",
+            ingredients: "Рис, Нори, Лосось",
+            image: "images/sake.jpg",
+          },
+          {
+            name: "Эби хосомаки",
+            price: "1340₸",
+            ingredients: "Рис, Нори, Креветки",
+            image: "images/ebi.jpg",
+          },
+          {
+            name: "Cheese ролл",
+            price: "2860₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Огурцы, Креветки, Сыр гауда, Соус сырный, Микро зелень",
+            image: "images/cheese.jpg",
+          },
+          {
+            name: "Канада ролл",
+            price: "3890₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Лосось, Огурец, Угорь, Соус унаги, Кунжут",
+            image: "images/canada.jpg",
+          },
+          {
+            name: "Вулкан ролл",
+            price: "2680₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Тунец, Огурец, Кунжут черный, Чука, Тобико красный",
+            image: "images/vulkan.jpg",
+          },
+          {
+            name: "Дракон ролл",
+            price: "4000₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Огурец, Снежный краб, Угорь, Соус унаги, Кунжут",
+            image: "images/dragon.jpg",
+          },
+        ],
+        baked: [
+          {
+            name: "Поцелуй гейши",
+            price: "3090₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Огурец, Лосось, Соус запеченный, Соус унаги, Кунжут",
+            image: "images/geisha.jpg",
+          },
+          {
+            name: "Горячий краб",
+            price: "2780₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Огурец, Снежный краб, Тобико красный, Кунжут, Соус унаги, Моцарелла",
+            image: "images/hot-crab.jpg",
+          },
+          {
+            name: "Королевский букет",
+            price: "5090₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Огурец, Креветки жареные, Лосось, Моцарелла, Соус запеченный, Соус унаги, Лук зелень, Тобико красный",
+            image: "images/royal.jpg",
+          },
+        ],
+        fried: [
+          {
+            name: "Сяке темпура",
+            price: "2670₸",
+            ingredients:
+              "Рис, Нори, Огурец, Лосось, Кляр, Панко, Творожный сыр, Красная икра",
+            image: "images/sake-tempura.jpg",
+          },
+          {
+            name: "Самурай",
+            price: "3400₸",
+            ingredients:
+              "Рис, Нори, Огурец, Угорь, Кляр, Панко, Творожный сыр, Лук зелень",
+            image: "images/samurai.jpg",
+          },
+          {
+            name: "Америка",
+            price: "2800₸",
+            ingredients:
+              "Рис, Нори, Лосось, Угорь, Огурец, Творожный сыр, Кляр, Панко, Соус унаги, Кунжут",
+            image: "images/america.jpg",
+          },
+          {
+            name: "Камикадзе",
+            price: "3090₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Лосось, Лук зелень, Соус спайс, Кляр, Панко",
+            image: "images/kamikaze.jpg",
+          },
+          {
+            name: "Hello Kitty",
+            price: "3200₸",
+            ingredients:
+              "Рис, Маминори, Творожный сыр, Тобико, Лосось, Креветка, Огурец, Кляр, Панко",
+            image: "images/hello-kitty.jpg",
+          },
+          {
+            name: "Цезарь жареный",
+            price: "2750₸",
+            ingredients:
+              "Рис, Нори, Творожный сыр, Курица филе, Айсберг, Кляр, Панко, Соус тар-тар",
+            image: "images/caesar-fried.jpg",
+          },
+        ],
+        sushi: [
+          {
+            name: "Суши лосось",
+            price: "910₸",
+            ingredients: "Рис, Лосось, Соус спайси",
+            // image: "images/sushi-salmon.jpg",
+          },
+          {
+            name: "Суши креветка",
+            price: "1010₸",
+            ingredients: "Рис, Креветки, Нори",
+            // image: "images/sushi-shrimp.jpg",
+          },
+          {
+            name: "Суши тунец",
+            price: "1010₸",
+            ingredients: "Рис, Тунец, Соус спайси",
+            // image: "images/sushi-tuna.jpg",
+          },
+          {
+            name: "Суши угорь",
+            price: "1010₸",
+            ingredients: "Рис, Угорь, Нори",
+            // image: "images/sushi-eel.jpg",
+          },
+          {
+            name: "Гункан с лососем",
+            price: "950₸",
+            ingredients: "Рис, Нори, Лосось, Соус запеченный",
+            // image: "images/gunkan-salmon.jpg",
+          },
+          {
+            name: "Гункан с тунцом",
+            price: "950₸",
+            ingredients: "Рис, Нори, Тунец, Соус спайси",
+            // image: "images/gunkan-tuna.jpg",
+          },
+          {
+            name: "Гункан острый снежный краб",
+            price: "650₸",
+            ingredients: "Рис, Нори, Снежный краб, Соус спайси",
+            // image: "images/gunkan-crab.jpg",
+          },
+          {
+            name: "Гункан с чукой",
+            price: "450₸",
+            ingredients: "Рис, Нори, Чука",
+            // image: "images/gunkan-chuka.jpg",
+          },
+        ],
+        pizza: [
+          {
+            name: "Маргарита с помидорами",
+            price: "2500₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Помидор",
+            image: "images/margarita.jpg",
+          },
+          {
+            name: "Пепперони",
+            price: "2890₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Колбаса",
+            image: "images/pepperoni.jpg",
+          },
+          {
+            name: "Пицца с копченой семгой",
+            price: "4890₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Черри, Копченая семга, Руккола",
+            image: "images/salmon-pizza.jpg",
+          },
+          {
+            name: "Пицца охотничья",
+            price: "3200₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Шампиньоны, Помидоры, Перец, Охотничьи колбаски",
+            image: "images/hunter.jpg",
+          },
+          {
+            name: "Пицца цыпленок",
+            price: "2900₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Куриное филе, Соус сырный",
+            image: "images/chicken-pizza.jpg",
+          },
+          {
+            name: "Пицца курица с грибами",
+            price: "3100₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Куриное филе, Шампиньоны, Соус тар-тар",
+            image: "images/chicken-mushroom.jpg",
+          },
+          {
+            name: "Пицца 4 сезона",
+            price: "3400₸",
+            ingredients:
+              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Куриное филе, Помидоры, Колбаса, Шампиньоны, Соус сырный",
+            image: "images/4seasons.jpg",
+          },
+        ],
+        sets: [
+          {
+            name: "Сет Микадо",
+            price: "8900₸",
+            ingredients: "Поцелуй гейши, Филадельфия lux, Вулкан",
+            image: "images/set-mikado.jpg",
+          },
+          {
+            name: "Сет Самурай Love",
+            price: "11900₸",
+            ingredients:
+              "Королевский букет, Самурай, Сяке темпура, Бургер Америка с лососем",
+            image: "images/set-samurai.jpg",
+          },
+          {
+            name: "Сет Японский стиль",
+            price: "12990₸",
+            ingredients:
+              "Филадельфия lux, Горячий краб, Камикадзе, Сяке хосомаки, Каппа хосомаки",
+            image: "images/set-japan.jpg",
+          },
+          {
+            name: "Классика №1",
+            price: "5900₸",
+            ingredients: "Цезарь жареный, Бонита, Каппа хосомаки",
+            image: "images/set-classic1.jpg",
+          },
+          {
+            name: "Классика №2",
+            price: "6300₸",
+            ingredients: "Цезарь жареный, Бонито, Кремо ролл",
+            image: "images/set-classic2.jpg",
+          },
+          {
+            name: "Сет Love",
+            price: "7190₸",
+            ingredients: "Королевский букет, Горячий краб",
+            image: "images/set-love.jpg",
+          },
+          {
+            name: "U.S.A.",
+            price: "5900₸",
+            ingredients: "Жареный бургер с лососем, Америка, Саки хосомаки",
+            image: "images/set-usa.jpg",
+          },
+          {
+            name: "Восточная гармония",
+            price: "8990₸",
+            ingredients: "Поцелуй гейша, Калифорния с лососем, Америка, Вулкан",
+            image: "images/set-harmony.jpg",
+          },
+          {
+            name: "Токио Mix",
+            price: "6000₸",
+            ingredients: "Hello kitty, Самурай, Филадельфия",
+            image: "images/set-tokyo.jpg",
+          },
+          {
+            name: "Сладкий шар",
+            price: "19900₸",
+            ingredients:
+              "Королевский букет, Поцелуй гейша, Цезарь ролл, Кремо ролл, Филадельфия lux, Сяке хосомаки, Каппа хосомаки, Гункан с чукой, Гункан с острым лососем, Жареный бургер с лососем",
+            image: "images/set-sweet.jpg",
+          },
+        ],
+        snacks: [
+          {
+            name: "Картофель фри",
+            price: "970₸",
+            ingredients: "Картофель, Экстра соль, Паприка",
+            image: "images/fries.jpg",
+          },
+        ],
+        drinks: [
+          {
+            name: "Coca-Cola 1л",
+            price: "500₸",
+            ingredients: "Газированный напиток",
+            image: "images/cola.webp",
+          },
+          {
+            name: "Sprite 1л",
+            price: "500₸",
+            ingredients: "Газированный напиток",
+            image: "images/sprite.png",
+          },
+          {
+            name: "Fanta 1л",
+            price: "500₸",
+            ingredients: "Газированный напиток",
+            image: "images/fanta.jpg",
+          },
+          {
+            name: "Pepsi 1л",
+            price: "500₸",
+            ingredients: "Газированный напиток",
+            image: "images/pepsi.png",
+          },
+          {
+            name: "FuzeTea 1л",
+            price: "500₸",
+            ingredients: "Холодный чай",
+            image: "images/fuse-tea.webp",
+          },
+        ],
+      };
+
+      const categoryNames = {
+        cold: "🧊 Холодные роллы",
+        baked: "🔥 Запеченные роллы",
+        fried: "🍤 Жареные роллы",
+        sushi: "🍱 Суши и гунканы",
+        pizza: "🍕 Пицца",
+        sets: "🎁 Сеты",
+        snacks: "🍟 Снэки",
+        drinks: "🥤 Напитки",
+      };
+
+      function renderProducts(category = "all") {
+        const content = document.getElementById("content");
+        content.innerHTML = "";
+
+        const categoriesToShow =
+          category === "all" ? Object.keys(products) : [category];
+
+        categoriesToShow.forEach((cat) => {
+          if (products[cat] && products[cat].length > 0) {
+            const section = document.createElement("div");
+            section.className = "category-section";
+            section.id = cat;
+
+            const title = document.createElement("h2");
+            title.className = "category-title";
+            title.textContent = categoryNames[cat];
+            section.appendChild(title);
+
+            const grid = document.createElement("div");
+            grid.className = "products-grid";
+
+            products[cat].forEach((product) => {
+              const card = document.createElement("div");
+              card.className = "product-card";
+
+              const isDrink = product.category === "drinks" || cat === "drinks";
+
+              card.innerHTML = `
+                        <div class="product">
+                            ${
+                                product.image
+                                ? `<img 
+                                    src="${product.image}" 
+                                    class="product-image"
+                                    style="${isDrink ? 'width:400px; height:400px; object-fit:cover;' : ''}"
+                                    >`
+                                : ""
+                            }
+                            <div class="product-info">
+                                <div class="product-name">${product.name}</div>
+                                <div class="product-ingredients">${product.ingredients}</div>
+                                <div class="product-footer">
+                                <div class="product-price">${product.price}</div>
+                                <button class="add-button" onclick="addToWhatsApp('${product.name}', '${product.price}')">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+              grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            content.appendChild(section);
+          }
+        });
+      }
+
+      function addToWhatsApp(name, price) {
+        const message = `Здравствуйте! Я хочу заказать:\n${name} - ${price}`;
+        const whatsappNumber = "77761587973";
+        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+          message
+        )}`;
+        window.open(url, "_blank");
+      }
+
+      document.getElementById("categoryTabs").addEventListener("click", (e) => {
+        if (e.target.classList.contains("category-tab")) {
+          document.querySelectorAll(".category-tab").forEach((tab) => {
+            tab.classList.remove("active");
+          });
+          e.target.classList.add("active");
+
+          const category = e.target.dataset.category;
+          renderProducts(category);
+        }
+      });
+
+      document.getElementById("whatsappBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        const whatsappNumber = "77761587973";
+        const message = "Здравствуйте! Хочу сделать заказ";
+        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+          message
+        )}`;
+        window.open(url, "_blank");
+      });
+
+      renderProducts();
+    </script>
+  </body>
+</html>
