@@ -1,1017 +1,1349 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sushizza - Доставка суши и роллов</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sushizza - Доставка суши и роллов</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #c0272d;
+      --red-bright: #e03030;
+      --bg-dark: #0e0e0e;
+      --bg-card: #181818;
+      --bg-card-hover: #202020;
+      --text-white: #ffffff;
+      --text-gray: #9a9a9a;
+      --text-light: #d0d0d0;
+      --border: rgba(255,255,255,0.07);
+    }
 
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: #f8f9fa;
-        color: #333;
-      }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      .header {
-        background: white;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      min-height: 100vh;
+    }
 
-      .logo {
-        font-size: 32px;
-        font-weight: bold;
-        color: #e74c3c;
-        text-align: center;
-        letter-spacing: 2px;
-      }
+    /* ── HEADER ── */
+    .header {
+      background: rgba(14,14,14,0.97);
+      backdrop-filter: blur(12px);
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
 
-      .address {
-        text-align: center;
-        color: #7f8c8d;
-        font-size: 14px;
-        margin-top: 8px;
-        font-weight: 500;
-      }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
 
-      .category-tabs {
-        display: flex;
-        gap: 10px;
-        padding: 20px;
-        overflow-x: auto;
-        background: white;
-        position: sticky;
-        top: 102px;
-        z-index: 99;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      }
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
 
-      .category-tab {
-        background: #f8f9fa;
-        border: 2px solid transparent;
-        border-radius: 25px;
-        padding: 12px 24px;
-        cursor: pointer;
-        white-space: nowrap;
-        font-weight: 500;
-        transition: all 0.3s;
-        font-size: 14px;
-      }
+    .logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 3px;
+      color: var(--text-white);
+      line-height: 1;
+    }
 
-      .category-tab.active {
-        background: #e74c3c;
-        color: white;
-        border-color: #e74c3c;
-      }
+    .logo-sub {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
 
-      .category-tab:hover:not(.active) {
-        background: #e8e8e8;
-      }
+    .header-address {
+      font-size: 12px;
+      color: var(--text-gray);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-      .content {
-        padding: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
 
-      .category-section {
-        margin-bottom: 40px;
-      }
+    .header-phone {
+      font-size: 13px;
+      color: var(--text-white);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      background: var(--red);
+      padding: 8px 16px;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+    .header-phone:hover { background: var(--red-bright); }
 
-      .category-title {
-        font-size: 28px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #2c3e50;
-      }
+    /* ── CART BUTTON IN HEADER ── */
+    .cart-header-btn {
+      position: relative;
+      background: #1e1e1e;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      color: var(--text-white);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .cart-header-btn:hover { border-color: var(--red); background: #252525; }
+    .cart-header-btn.has-items { border-color: var(--red); }
 
-      .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-      }
+    .cart-badge {
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .cart-badge.show { display: flex; }
 
-      .product-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
+    /* ── NAV TABS ── */
+    .nav-wrap {
+      background: rgba(14,14,14,0.97);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 73px;
+      z-index: 190;
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+    }
 
-      .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      }
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 10px 0;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
 
-      .product-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        background: #f0f0f0;
-      }
+    .nav-tab {
+      flex-shrink: 0;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-gray);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .nav-tab:hover { color: var(--text-white); border-color: var(--border); }
+    .nav-tab.active {
+      background: var(--red);
+      color: white;
+      border-color: var(--red);
+    }
 
-      .product-info {
-        padding: 16px;
-      }
+    /* ── DELIVERY BANNER ── */
+    .delivery-banner {
+      background: #141414;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 20px;
+    }
+    .delivery-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .delivery-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-gray);
+      flex-shrink: 0;
+    }
+    .delivery-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .delivery-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, opacity 0.2s;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .delivery-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .delivery-btn-choco  { background: #FF6B00; color: #fff; }
+    .delivery-btn-wolt   { background: #009DE0; color: #fff; }
+    .delivery-btn-yandex { background: #FC3F1D; color: #fff; }
+    .delivery-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-      .product-name {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #2c3e50;
-      }
+    /* ── CONTENT ── */
+    .content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 20px 120px;
+    }
 
-      .product-ingredients {
-        font-size: 13px;
-        color: #7f8c8d;
-        margin-bottom: 12px;
-        line-height: 1.5;
-      }
+    .section { margin-bottom: 48px; }
 
-      .product-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
 
-      .product-price {
-        font-size: 22px;
-        font-weight: bold;
-        color: #e74c3c;
-      }
+    .section-badge {
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 4px;
+    }
 
-      .add-button {
-        background: #27ae60;
-        color: white;
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-        font-weight: 300;
-      }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--text-white);
+    }
 
-      .add-button:hover {
-        background: #229954;
-        transform: scale(1.1);
-      }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
 
-      .add-button:active {
-        transform: scale(0.95);
-      }
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 16px;
+    }
 
-      .whatsapp-float {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        background: #25d366;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
-        z-index: 1000;
-        transition: all 0.3s;
-      }
+    /* ── CARD ── */
+    .card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(192,39,45,0.35);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    }
 
-      .whatsapp-float:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: #1a1a1a;
+      display: block;
+    }
 
-      .whatsapp-float svg {
-        width: 35px;
-        height: 35px;
-        fill: white;
-      }
+    .card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #1a1a1a, #222);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      opacity: 0.3;
+    }
 
-      .gis-float {
-        position: fixed;
-        bottom: 100px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 1000;
-        transition: all 0.3s;
-      }
+    .card-body {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .gis-float:hover {
-        transform: scale(1.1);
-      }
+    .card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
 
-      .gis-float svg {
-        width: 32px;
-        height: 32px;
-        fill: white;
-      }
+    .card-ingredients {
+      font-size: 11px;
+      color: var(--text-gray);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 14px;
+    }
 
-      .footer {
-        background: linear-gradient(
-          135deg,
-          #1a1a2e 0%,
-          #16213e 50%,
-          #0f3460 100%
-        );
-        color: white;
-        padding: 50px 20px 30px;
-        margin-top: 60px;
-        position: relative;
-        overflow: hidden;
-      }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-      .footer::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #e74c3c, #ff6b35, #e74c3c);
-      }
+    .card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      color: var(--text-white);
+      letter-spacing: 1px;
+    }
 
-      .footer-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 40px;
-        position: relative;
-        z-index: 1;
-      }
+    /* ── ADD BUTTON (qty control) ── */
+    .add-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
 
-      .footer-section {
-        animation: fadeInUp 0.6s ease-out;
-      }
+    .card-btn {
+      background: var(--red);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+      font-weight: 300;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .card-btn:hover { background: var(--red-bright); transform: scale(1.1); }
+    .card-btn:active { transform: scale(0.95); }
 
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+    .qty-ctrl {
+      display: none;
+      align-items: center;
+      background: #222;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .qty-ctrl.show { display: flex; }
 
-      .footer-section h3 {
-        font-size: 20px;
-        margin-bottom: 20px;
-        color: #fff;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
+    .qty-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      width: 34px;
+      height: 34px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .qty-btn:hover { background: #333; }
+    .qty-btn.minus { color: var(--text-gray); }
 
-      .footer-section p,
-      .footer-section a {
-        font-size: 15px;
-        line-height: 2;
-        color: #b8c5d6;
-        text-decoration: none;
-        display: block;
-        transition: all 0.3s;
-      }
+    .qty-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      min-width: 28px;
+      text-align: center;
+      color: white;
+    }
 
-      .footer-section a {
-        position: relative;
-        padding-left: 20px;
-      }
+    /* ── LIST CARD ── */
+    .list-grid { display: flex; flex-direction: column; gap: 10px; }
 
-      .footer-section a::before {
-        content: "→";
-        position: absolute;
-        left: 0;
-        opacity: 0;
-        transition: all 0.3s;
-      }
+    .list-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.2s, background 0.2s;
+      gap: 12px;
+    }
+    .list-card:hover { border-color: rgba(192,39,45,0.35); background: var(--bg-card-hover); }
 
-      .footer-section a:hover {
-        color: #ff6b35;
-        padding-left: 25px;
-      }
+    .list-card-name { font-size: 14px; font-weight: 600; color: var(--text-white); }
+    .list-card-sub { font-size: 11px; color: var(--text-gray); margin-top: 2px; }
+    .list-card-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .list-card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: var(--text-white);
+      letter-spacing: 1px;
+    }
 
-      .footer-section a:hover::before {
-        opacity: 1;
-        left: 5px;
-      }
+    /* ── DRINKS ── */
+    .drinks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .drink-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+    .drink-card:hover { border-color: rgba(192,39,45,0.35); }
+    .drink-section-label {
+      grid-column: 1 / -1;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      padding: 16px 0 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2px;
+    }
+    .drink-section-label:first-child { padding-top: 0; }
+    .drink-name { font-size: 13px; font-weight: 600; }
+    .drink-price { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--red); letter-spacing: 1px; }
 
-      .contact-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 12px 0;
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 8px;
-        transition: all 0.3s;
-      }
+    /* ── CART DRAWER ── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
 
-      .contact-item:hover {
-        background: rgba(255, 107, 53, 0.1);
-        transform: translateX(5px);
-      }
+    .cart-drawer {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 420px;
+      max-width: 100vw;
+      background: #111;
+      border-left: 1px solid var(--border);
+      z-index: 901;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-drawer.open { transform: translateX(0); }
 
-      .contact-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, #e74c3c, #ff6b35);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
+    .cart-head {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-head-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 2px;
+    }
+    .cart-close {
+      background: #222;
+      border: none;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .cart-close:hover { background: #333; }
 
-      .map-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 15px;
-        padding: 12px 24px;
-        background: linear-gradient(135deg, #ff6b35, #e74c3c);
-        border-radius: 25px;
-        color: white !important;
-        font-weight: 600;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-      }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 24px;
+    }
 
-      .map-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-        padding-left: 20px !important;
-      }
+    .cart-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-gray);
+      font-size: 14px;
+      gap: 12px;
+    }
+    .cart-empty-icon { font-size: 48px; opacity: 0.3; }
 
-      .map-link::before {
-        display: none;
-      }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-item:last-child { border-bottom: none; }
 
-      .working-hours {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 15px;
-        border-radius: 12px;
-        border-left: 4px solid #ff6b35;
-      }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-size: 14px; font-weight: 600; line-height: 1.3; }
+    .cart-item-price { font-size: 12px; color: var(--text-gray); margin-top: 3px; }
 
-      .footer-bottom {
-        text-align: center;
-        margin-top: 50px;
-        padding-top: 30px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        color: #7f8fa6;
-        font-size: 14px;
-      }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: #1e1e1e;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .cq-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cq-btn:hover { background: #2a2a2a; }
+    .cq-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 17px;
+      min-width: 26px;
+      text-align: center;
+    }
 
-      .footer-logo {
-        font-size: 28px;
-        font-weight: bold;
-        background: linear-gradient(135deg, #e74c3c, #ff6b35);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 15px;
-      }
+    .cart-item-total {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      min-width: 70px;
+      text-align: right;
+    }
 
-      @media (max-width: 768px) {
-        .products-grid {
-          grid-template-columns: 1fr;
-        }
+    .cart-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+    }
 
-        .category-title {
-          font-size: 24px;
-        }
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .cart-total-label { font-size: 13px; color: var(--text-gray); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+    .cart-total-sum { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; }
 
-        .logo {
-          font-size: 28px;
-        }
+    .cart-wa-btn {
+      width: 100%;
+      background: #25D366;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s, transform 0.15s;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .cart-wa-btn:hover { background: #20c05a; transform: translateY(-1px); }
+    .cart-wa-btn:active { transform: translateY(0); }
+    .cart-wa-btn svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
 
-        .whatsapp-float {
-          bottom: 20px;
-          right: 20px;
-          width: 56px;
-          height: 56px;
-        }
+    .cart-clear-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      color: var(--text-gray);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: border-color 0.2s, color 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .cart-clear-btn:hover { border-color: var(--red); color: var(--red); }
 
-        .gis-float {
-          bottom: 85px;
-          right: 20px;
-          width: 56px;
-          height: 56px;
-        }
+    /* ── FLOATING CART BAR (mobile) ── */
+    .cart-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--red);
+      border-radius: 50px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      z-index: 800;
+      box-shadow: 0 8px 32px rgba(192,39,45,0.45);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s;
+      white-space: nowrap;
+      min-width: 260px;
+      justify-content: space-between;
+    }
+    .cart-bar.show { transform: translateX(-50%) translateY(0); }
+    .cart-bar:hover { box-shadow: 0 10px 40px rgba(192,39,45,0.6); }
 
-        .footer-content {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="header">
-      <div class="logo">🍣 SUSHIZZA</div>
-      <div class="address">📍 г. Актобе, ул. Мустафы Шокая 27</div>
+    .cart-bar-left { display: flex; align-items: center; gap: 10px; }
+    .cart-bar-count {
+      background: rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .cart-bar-label { font-size: 14px; font-weight: 700; }
+    .cart-bar-sum { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a0a0a;
+      border-top: 1px solid var(--border);
+      padding: 48px 20px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 3px;
+      color: var(--text-white);
+      margin-bottom: 8px;
+    }
+
+    .footer-desc { font-size: 13px; color: var(--text-gray); line-height: 1.7; }
+
+    .footer-h {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    .footer-link {
+      display: block;
+      font-size: 14px;
+      color: var(--text-light);
+      text-decoration: none;
+      line-height: 2.2;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: white; }
+
+    .footer-hours {
+      background: rgba(192,39,45,0.12);
+      border: 1px solid rgba(192,39,45,0.25);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .footer-hours-time { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--red); letter-spacing: 2px; }
+    .footer-hours-label { font-size: 11px; color: var(--text-gray); margin-top: 4px; }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-gray);
+      text-align: center;
+    }
+
+    /* ── FABs ── */
+    .fab-wrap {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 700;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .fab:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(0,0,0,0.6); }
+    .fab-wa { background: #25D366; }
+    .fab-2gis { background: #1dbf7b; }
+    .fab svg { width: 30px; height: 30px; fill: white; }
+    .fab img { width: 32px; height: 32px; object-fit: contain; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header { flex-wrap: wrap; padding: 12px 16px; }
+      .header-address { display: none; }
+      .content { padding: 20px 12px 120px; }
+      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .card-name { font-size: 13px; }
+      .card-price { font-size: 20px; }
+      .card-btn { width: 30px; height: 30px; font-size: 16px; }
+      .section-title { font-size: 24px; }
+      .fab-wrap { bottom: 90px; right: 16px; }
+      .cart-drawer { width: 100vw; }
+    }
+    @media (max-width: 400px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo-wrap">
+    <div class="logo-icon">🍣</div>
+    <div>
+      <div class="logo-text">SUSHIZZA</div>
+      <div class="logo-sub">Fresh · Sushi · Pizza</div>
     </div>
+  </div>
+  <div class="header-address">📍 г. Актобе, ул. Мустафы Шокая 27</div>
+  <div class="header-right">
+    <button class="cart-header-btn" id="cartHeaderBtn" onclick="openCart()">
+      🛒 Корзина
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <a href="tel:+77761587973" class="header-phone">+7 (776) 158-79-73</a>
+  </div>
+</header>
 
-    <div class="category-tabs" id="categoryTabs">
-      <div class="category-tab active" data-category="all">Все</div>
-      <div class="category-tab" data-category="cold">🧊 Холодные роллы</div>
-      <div class="category-tab" data-category="baked">🔥 Запеченные роллы</div>
-      <div class="category-tab" data-category="fried">🍤 Жареные роллы</div>
-      <div class="category-tab" data-category="pizza">🍕 Пицца</div>
-      <div class="category-tab" data-category="sets">🎁 Сеты</div>
-      <div class="category-tab" data-category="snacks">🍗🍟 Chicken & фри</div>
-      <div class="category-tab" data-category="drinks">🥤 Напитки</div>
+<!-- NAV TABS -->
+<div class="nav-wrap">
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" data-cat="all">Все</button>
+    <button class="nav-tab" data-cat="cold">Холодные роллы</button>
+    <button class="nav-tab" data-cat="baked">Запеченные</button>
+    <button class="nav-tab" data-cat="fried">Жареные</button>
+    <button class="nav-tab" data-cat="hits">Наши хиты</button>
+    <button class="nav-tab" data-cat="hyped">Хайповые суши</button>
+    <button class="nav-tab" data-cat="pizza">Пицца</button>
+    <button class="nav-tab" data-cat="sets">Сеты</button>
+    <button class="nav-tab" data-cat="combo">Комбо</button>
+    <button class="nav-tab" data-cat="fastfood">Фаст-фуд</button>
+    <button class="nav-tab" data-cat="snacks">Закуски</button>
+    <button class="nav-tab" data-cat="drinks">Напитки</button>
+  </div>
+</div>
+
+<!-- DELIVERY SERVICES -->
+<div class="delivery-banner">
+  <div class="delivery-inner">
+    <span class="delivery-label">Заказать через:</span>
+    <div class="delivery-links">
+      <a href="#" target="_blank" class="delivery-btn delivery-btn-choco">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+        Chocofood
+      </a>
+      <a href="https://wolt.com/ru/kaz/aktobe/restaurant/sushizza-akt" target="_blank" class="delivery-btn delivery-btn-wolt">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+        Wolt
+      </a>
+      <a href="https://eda.yandex.kz/ru-kz/r/sushizza?placeSlug=sushizza_lj3n2" target="_blank" class="delivery-btn delivery-btn-yandex">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+        Яндекс Еда
+      </a>
     </div>
+  </div>
+</div>
 
-    <div class="content" id="content"></div>
+<!-- MAIN CONTENT -->
+<main class="content" id="mainContent"></main>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-section">
-          <div class="footer-logo">🍣 SUSHIZZA</div>
-          <p>Доставка вкусных суши и роллов в Актобе</p>
-          <p style="margin-top: 15px; color: #7f8fa6">
-            Мы готовим с душой и доставляем с улыбкой!
-          </p>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">SUSHIZZA</div>
+      <p class="footer-desc">Доставка вкусных суши, роллов и пиццы в Актобе. Готовим с душой из свежих продуктов.</p>
+    </div>
+    <div>
+      <div class="footer-h">Адрес</div>
+      <p class="footer-desc">г. Актобе<br>ул. Мустафы Шокая 27</p>
+      <a href="https://2gis.kz/aktobe/geo/70030076651218529/57.139108,50.270921" target="_blank" class="footer-link" style="margin-top:10px; color: var(--red);">📍 Открыть в 2ГИС →</a>
+    </div>
+    <div>
+      <div class="footer-h">Контакты</div>
+      <a href="tel:+77761587973" class="footer-link">+7 (776) 158-79-73</a>
+      <a href="https://wa.me/77761587973" target="_blank" class="footer-link">WhatsApp</a>
+      <a href="https://instagram.com/sushizza.aktobe" target="_blank" class="footer-link">@sushizza.aktobe</a>
+    </div>
+    <div>
+      <div class="footer-h">Доставка через</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+        <a href="#" target="_blank" class="delivery-btn delivery-btn-choco" style="width:fit-content;">Chocofood</a>
+        <a href="https://wolt.com/ru/kaz/aktobe/restaurant/sushizza-akt" target="_blank" class="delivery-btn delivery-btn-wolt" style="width:fit-content;">Wolt</a>
+        <a href="https://eda.yandex.kz/ru-kz/r/sushizza?placeSlug=sushizza_lj3n2" target="_blank" class="delivery-btn delivery-btn-yandex" style="width:fit-content;">Яндекс Еда</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-h">Режим работы</div>
+      <div class="footer-hours">
+        <div class="footer-hours-label">Ежедневно</div>
+        <div class="footer-hours-time">11:00 – 23:00</div>
+        <div class="footer-hours-label" style="margin-top:6px;">Принимаем заказы онлайн</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 SUSHIZZA. Все права защищены. Актобе</div>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <div class="cart-head-title">🛒 Корзина</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Итого</span>
+      <span class="cart-total-sum" id="cartTotalSum">0₸</span>
+    </div>
+    <button class="cart-wa-btn" onclick="sendToWhatsApp()">
+      <svg viewBox="0 0 32 32"><path d="M16 0C7.164 0 0 7.163 0 16c0 2.825 0.737 5.607 2.138 8.099L0.747 30.88c-0.151 0.426 0.231 0.848 0.672 0.737l6.384-1.603C10.202 31.34 13.067 32 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.784 19.507c-0.428-0.214-2.528-1.247-2.921-1.39-0.393-0.143-0.679-0.214-0.964 0.214-0.286 0.428-1.107 1.39-1.357 1.676-0.25 0.286-0.5 0.321-0.929 0.107-0.428-0.214-1.808-0.667-3.443-2.126-1.272-1.135-2.132-2.537-2.382-2.965-0.25-0.428-0.027-0.659 0.188-0.872 0.192-0.192 0.428-0.5 0.643-0.75 0.214-0.25 0.286-0.428 0.428-0.714 0.143-0.286 0.071-0.536-0.036-0.75-0.107-0.214-0.964-2.322-1.321-3.179-0.348-0.835-0.701-0.722-0.964-0.735-0.25-0.012-0.536-0.015-0.821-0.015s-0.75 0.107-1.143 0.536c-0.393 0.428-1.5 1.464-1.5 3.571s1.536 4.143 1.75 4.429c0.214 0.286 3.018 4.607 7.313 6.461 1.022 0.441 1.821 0.705 2.443 0.903 1.029 0.327 1.965 0.281 2.705 0.17 0.825-0.123 2.528-1.036 2.886-2.036 0.357-1 0.357-1.857 0.25-2.036-0.107-0.179-0.393-0.286-0.821-0.5z"/></svg>
+      Оформить через WhatsApp
+    </button>
+    <button class="cart-clear-btn" onclick="clearCart()">Очистить корзину</button>
+  </div>
+</div>
+
+<!-- FLOATING CART BAR -->
+<div class="cart-bar" id="cartBar" onclick="openCart()">
+  <div class="cart-bar-left">
+    <span class="cart-bar-count" id="cartBarCount">0</span>
+    <span class="cart-bar-label">Моя корзина</span>
+  </div>
+  <span class="cart-bar-sum" id="cartBarSum">0₸</span>
+</div>
+
+<!-- FABs -->
+<div class="fab-wrap">
+  <a href="https://wa.me/77761587973" target="_blank" class="fab fab-wa" title="WhatsApp">
+    <svg viewBox="0 0 32 32"><path d="M16 0C7.164 0 0 7.163 0 16c0 2.825 0.737 5.607 2.138 8.099L0.747 30.88c-0.151 0.426 0.231 0.848 0.672 0.737l6.384-1.603C10.202 31.34 13.067 32 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.784 19.507c-0.428-0.214-2.528-1.247-2.921-1.39-0.393-0.143-0.679-0.214-0.964 0.214-0.286 0.428-1.107 1.39-1.357 1.676-0.25 0.286-0.5 0.321-0.929 0.107-0.428-0.214-1.808-0.667-3.443-2.126-1.272-1.135-2.132-2.537-2.382-2.965-0.25-0.428-0.027-0.659 0.188-0.872 0.192-0.192 0.428-0.5 0.643-0.75 0.214-0.25 0.286-0.428 0.428-0.714 0.143-0.286 0.071-0.536-0.036-0.75-0.107-0.214-0.964-2.322-1.321-3.179-0.348-0.835-0.701-0.722-0.964-0.735-0.25-0.012-0.536-0.015-0.821-0.015s-0.75 0.107-1.143 0.536c-0.393 0.428-1.5 1.464-1.5 3.571s1.536 4.143 1.75 4.429c0.214 0.286 3.018 4.607 7.313 6.461 1.022 0.441 1.821 0.705 2.443 0.903 1.029 0.327 1.965 0.281 2.705 0.17 0.825-0.123 2.528-1.036 2.886-2.036 0.357-1 0.357-1.857 0.25-2.036-0.107-0.179-0.393-0.286-0.821-0.5z"/></svg>
+  </a>
+  <a href="https://2gis.kz/aktobe/geo/70030076651218529/57.139108,50.270921" target="_blank" class="fab fab-2gis" title="2ГИС">
+    <img src="./images/2gis.png" alt="2GIS" onerror="this.outerHTML='<span style=font-size:22px>📍</span>'">
+  </a>
+</div>
+
+<script>
+const WA = '77761587973';
+
+// ── CART STATE ──
+const cart = {}; // { id: { name, price, qty } }
+
+function priceNum(str) {
+  return parseInt(str.replace(/[^\d]/g, '')) || 0;
+}
+
+function cartTotal() {
+  return Object.values(cart).reduce((s, i) => s + priceNum(i.price) * i.qty, 0);
+}
+
+function cartCount() {
+  return Object.values(cart).reduce((s, i) => s + i.qty, 0);
+}
+
+function updateCartUI() {
+  const count = cartCount();
+  const total = cartTotal();
+
+  // badge
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = count;
+  badge.classList.toggle('show', count > 0);
+  document.getElementById('cartHeaderBtn').classList.toggle('has-items', count > 0);
+
+  // floating bar
+  const bar = document.getElementById('cartBar');
+  bar.classList.toggle('show', count > 0);
+  document.getElementById('cartBarCount').textContent = count + ' шт';
+  document.getElementById('cartBarSum').textContent = total.toLocaleString('ru') + '₸';
+
+  // drawer items
+  const el = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  document.getElementById('cartTotalSum').textContent = total.toLocaleString('ru') + '₸';
+
+  if (count === 0) {
+    el.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div>Корзина пуста</div><div style="font-size:12px;color:#666;">Добавьте блюда из меню</div></div>`;
+    footer.style.display = 'none';
+  } else {
+    footer.style.display = 'block';
+    el.innerHTML = Object.entries(cart).map(([id, item]) => `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${item.price} за шт.</div>
         </div>
-
-        <div class="footer-section">
-          <h3>📍 Наш адрес</h3>
-          <p style="font-size: 16px; color: #fff; margin-bottom: 10px">
-            г. Актобе
-          </p>
-          <p style="color: #b8c5d6">ул. Мустафы Шокая 27</p>
-          <a
-            href="https://2gis.kz/aktobe/geo/70030076651218529/57.139108,50.270921"
-            target="_blank"
-            class="map-link"
-          >
-            📍 Открыть карту
-          </a>
+        <div class="cart-item-qty">
+          <button class="cq-btn" onclick="changeQty('${id}', -1)">−</button>
+          <span class="cq-num">${item.qty}</span>
+          <button class="cq-btn" onclick="changeQty('${id}', 1)">+</button>
         </div>
+        <div class="cart-item-total">${(priceNum(item.price) * item.qty).toLocaleString('ru')}₸</div>
+      </div>`).join('');
+  }
 
-        <div class="footer-section">
-          <h3>📞 Контакты</h3>
-          <div class="contact-item">
-            <div class="contact-icon">📱</div>
-            <a href="tel:+77761587973" style="padding-left: 0"
-              >+7 (776) 158-79-73</a
-            >
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon">💬</div>
-            <a
-              href="https://wa.me/77761587973"
-              target="_blank"
-              style="padding-left: 0"
-            >
-              Написать в WhatsApp
-            </a>
-          </div>
-        </div>
+  // update all add-ctrl buttons on page
+  document.querySelectorAll('[data-item-id]').forEach(wrap => {
+    const id = wrap.dataset.itemId;
+    const qty = cart[id] ? cart[id].qty : 0;
+    const addBtn = wrap.querySelector('.card-btn');
+    const qtyCtrl = wrap.querySelector('.qty-ctrl');
+    const qNum = wrap.querySelector('.qty-num');
+    if (addBtn && qtyCtrl) {
+      if (qty > 0) {
+        addBtn.style.display = 'none';
+        qtyCtrl.classList.add('show');
+        if (qNum) qNum.textContent = qty;
+      } else {
+        addBtn.style.display = 'flex';
+        qtyCtrl.classList.remove('show');
+      }
+    }
+  });
+}
 
-        <div class="footer-section">
-          <h3>⏰ Режим работы</h3>
-          <div class="working-hours">
-            <p style="color: #fff; font-weight: 600; margin-bottom: 8px">
-              Ежедневно
-            </p>
-            <p style="font-size: 18px; color: #ff6b35; font-weight: 700">
-              11:00 - 23:00
-            </p>
-            <p style="margin-top: 10px; font-size: 13px">
-              Принимаем заказы онлайн
-            </p>
+function addItem(id, name, price) {
+  if (cart[id]) {
+    cart[id].qty++;
+  } else {
+    cart[id] = { name, price, qty: 1 };
+  }
+  updateCartUI();
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty += delta;
+  if (cart[id].qty <= 0) delete cart[id];
+  updateCartUI();
+}
+
+function clearCart() {
+  Object.keys(cart).forEach(k => delete cart[k]);
+  updateCartUI();
+}
+
+function openCart() {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function sendToWhatsApp() {
+  const items = Object.values(cart);
+  if (!items.length) return;
+  let msg = 'Здравствуйте! Хочу сделать заказ:\n\n';
+  items.forEach(i => {
+    msg += `• ${i.name} × ${i.qty} = ${(priceNum(i.price) * i.qty).toLocaleString('ru')}₸\n`;
+  });
+  msg += `\nИтого: ${cartTotal().toLocaleString('ru')}₸`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ── MENU DATA ──
+const data = {
+  cold: {
+    label: 'Суық / Холодные роллы',
+    badge: 'Холодные',
+    type: 'grid',
+    items: [
+      { name: 'Каппа маки', price: '1390₸', ing: 'Рис, нори, огурцы, кунжут', img: 'images/kapamaki.JPG' },
+      { name: 'Эби маки', price: '1390₸', ing: 'Рис, нори, креветки', img: 'images/ebimaki.JPG' },
+      { name: 'Сяке маки', price: '1390₸', ing: 'Рис, нори, лосось', img: 'images/sakmaki.JPG' },
+      { name: 'Вулкан', price: '2490₸', ing: 'Рис, нори, творожный сыр, лосось, огурцы', img: 'images/vulkanm.jpg' },
+      { name: 'Калифорния с лососем', price: '2790₸', ing: 'Рис, нори, лосось, авокадо, огурцы, творожный сыр, тобико', img: 'images/kalilosos.jpg' },
+      { name: 'Калифорния с крабом', price: '2790₸', ing: 'Рис, нори, творожный сыр, авокадо, краб, огурцы', img: 'images/kalikrab.jpg' },
+      { name: 'Филадельфия', price: '2890₸', ing: 'Рис, нори, творожный сыр, огурец, лосось', img: 'images/fil.jpg' },
+      { name: 'Cheese ролл', price: '2890₸', ing: 'Рис, нори, творожный сыр, креветка, сыр гауда', img: 'images/cheesee.jpg' },
+      { name: 'Филадельфия Люкс', price: '2990₸', ing: 'Рис, нори, творожный сыр, лосось, авокадо, манго', img: 'images/philadelphia-lux.jpg' },
+      { name: 'Канада', price: '2990₸', ing: 'Рис, нори, творожный сыр, снежный краб, огурцы, угорь', img: 'images/canada.jpg' },
+    ]
+  },
+  baked: {
+    label: 'Пісірілген / Запеченные роллы',
+    badge: 'Запеченные',
+    type: 'grid',
+    items: [
+      { name: 'Запеченная бонито', price: '2590₸', ing: 'Рис, нори, творожный сыр, лосось, огурцы, стружка тунца', img: 'images/boni.JPG' },
+      { name: 'Поцелуй гейши', price: '2990₸', ing: 'Рис, нори, творожный сыр, огурцы, лосось, соус тобико, унаги, кунжут', img: 'images/geish.jpg' },
+      { name: 'Запеченная филадельфия', price: '2990₸', ing: 'Рис, нори, творожный сыр, огурцы, лосось, сырная шапка', img: 'images/zapfil.jpg' },
+      { name: 'Королевский бэйкет', price: '3390₸', ing: 'Рис, нори, творожный сыр, креветки, лосось, моцарелла', img: 'images/bukeet.jpg' },
+    ]
+  },
+  fried: {
+    label: 'Қуырылған / Жаренные роллы',
+    badge: 'Жареные',
+    type: 'grid',
+    items: [
+      { name: 'Сяке темпура', price: '2790₸', ing: 'Рис, нори, огурец, лосось, творожный сыр, икра масаго, кляр, панко', img: 'images/saket.jpg' },
+      { name: 'Самурай ролл', price: '2790₸', ing: 'Рис, нори, огурец, угорь, творожный сыр, кляр, панко, зеленый лук', img: 'images/samu.jpg' },
+      { name: 'Америка ролл', price: '2790₸', ing: 'Рис, нори, лосось, угорь, огурец, творожный сыр, соус унаги, кунжут, кляр, панко', img: 'images/ame.jpg' },
+      { name: 'Жаренная Филадельфия', price: '2790₸', ing: 'Рис, нори, творожный сыр, огурец, лосось, кляр, панко, унаги, кунжут', img: 'images/zharfil.JPG' },
+      { name: 'Цезарь жареный', price: '2790₸', ing: 'Рис, нори, творожный сыр, айсберг, филе курицы, кляр, панко, тартар соус, пармеззан', img: 'images/zharcae.JPG' },
+      { name: 'Hello Kitty', price: '3200₸', ing: 'Маменнори, рис, творожный сыр, креветка, тобико, лосось', img: 'images/hello-kitty.jpg' },
+    ]
+  },
+  hits: {
+    label: 'Біздің хиттар / Наши хиты',
+    badge: 'Хиты',
+    type: 'grid',
+    items: [
+      { name: 'Шаурдельфия', price: '2790₸', ing: 'Рис, нори, творожный сыр, огурец, лосось', img: 'images/donsush.jpg' },
+      { name: 'Донер суши', price: '3490₸', ing: 'Жареный в кляре, пропущенный рис, лист нори, огурец, лосось и угорь, творожный сыр', img: 'images/donsushi.jpg' },
+      { name: 'Суши бургер', price: '3490₸', ing: 'Рис, нори, лосось, огурцы, творожный сыр, айсберг, спайси соус', img: 'images/bursush.jpg' },
+      { name: 'Пицца SUSHIZZA', price: '4290₸', ing: 'Тесто, сыр, соус, колбаса, помидор, сладкий перец, маслины, кетчуп, сырный соус, фри', img: 'images/sushizzap.jpg' },
+    ]
+  },
+  hyped: {
+    label: 'Хайповые суши',
+    badge: 'Хайп',
+    type: 'grid',
+    items: [
+      { name: 'Хайп — Калифорния', price: '3490₸', ing: 'Сыр, огурец, краб, масаго (в тубусе)', img: 'images/kalikrab.jpg' },
+      { name: 'Хайп — Филадельфия', price: '3490₸', ing: 'Огурец, сыр, лосось, масаго (в тубусе)', img: 'images/fil.jpg' },
+      { name: 'Хайп — Фила LUX', price: '3490₸', ing: 'Сыр, манго, авокадо, масаго (в тубусе)', img: 'images/philadelphia-lux.jpg' },
+      { name: 'Хайп — Америка', price: '3490₸', ing: 'Сыр, лосось, угорь, огурец (в тубусе)', img: 'images/ame.jpg' },
+      { name: 'Хайп — Цезарь ролл', price: '3490₸', ing: 'Сыр, курица, лист салата, помидор (в тубусе)', img: 'images/zharcae.JPG' },
+    ]
+  },
+  pizza: {
+    label: 'Пицца',
+    badge: 'Пицца',
+    type: 'grid',
+    items: [
+      { name: 'Пицца Маргарита', price: '2590₸', ing: 'Тесто, муть соус, моцарелла, гауда, манная крупа, помидор', img: 'images/margarita.jpg' },
+      { name: 'Пицца Цыпленок', price: '2790₸', ing: 'Тесто, муть соус, моцарелла, гауда, куриное филе, сырный соус', img: 'images/cyp.jpg' },
+      { name: 'Пицца Пепперони', price: '2790₸', ing: 'Тесто, муть соус, моцарелла, гауда, колбаса', img: 'images/pep.jpg' },
+      { name: 'Пицца с курицей и грибами', price: '2790₸', ing: 'Тесто, муть соус, моцарелла, гауда, куриное филе, шампиньоны, соус тар-тар', img: 'images/gri.jpg' },
+      { name: 'Пицца 4 сезона', price: '2790₸', ing: 'Тесто, муть соус, моцарелла, гауда, куриное филе, помидоры, колбаса, шампиньоны', img: 'images/sez.jpg' },
+      { name: 'Пицца Охотничья', price: '2790₸', ing: 'Тесто, муть соус, моцарелла, гауда, шампиньоны, помидоры, перец, охотничьи колбаски', img: 'images/oxo.jpg' },
+      { name: 'Пицца 4 сыра', price: '3590₸', ing: 'Тесто, муть соус, четыре вида сыра', img: 'images/syr.jpg' },
+      { name: 'Пицца Болонезье', price: '3200₸', ing: 'Тесто, соус, говяжий фарш, сыры', img: 'images/margarita.jpg' },
+      { name: 'Пицца Мексиканский', price: '3200₸', ing: 'Тесто, соус, говяжий фарш, перец, сыры', img: 'images/hunter.jpg' },
+      { name: 'Пицца Сальмоне', price: '4590₸', ing: 'Тесто, муть соус, моцарелла, гауда, черри, копченая семга, руккола', img: 'images/sal.jpg' },
+    ]
+  },
+  sets: {
+    label: 'Сеттар / Сеты',
+    badge: 'Сеты',
+    type: 'grid',
+    items: [
+      { name: 'Сет Поцелуй дракона', price: '4990₸', ing: 'Поцелуй гейши, Канада', img: 'images/pose.jpg' },
+      { name: 'Сет USA', price: '5190₸', ing: 'Суши бургер, Сяке маки, Америка', img: 'images/usaa.jpg' },
+      { name: 'Сет Классика', price: '5590₸', ing: 'Цезарь жареный, Бонито запеченный, Cheese ролл', img: 'images/klaa.jpg' },
+      { name: 'Сет на двоих', price: '6280₸', ing: 'Суши бургер, Суши донер', img: 'images/set-tokyo.jpg' },
+      { name: 'Сет Tokyo Mix', price: '6490₸', ing: 'Филадельфия, Hello Kitty, Самурай', img: 'images/tokyoo.jpg' },
+      { name: 'Сет Филаман', price: '7090₸', ing: 'Филадельфия, Фила Люкс, Поцелуй гейши', img: 'images/filamann.jpg' },
+      { name: 'Сет SUSHIZZA', price: '8270₸', ing: 'Поцелуй гейши, Цезарь жареный, Запеченная Филадельфия', img: 'images/sushizzas.jpg' },
+      { name: 'Сет Легенда', price: '9990₸', ing: 'Королевский бэйкет, Поцелуй гейши, Канада, Калифорния с крабом', img: 'images/legee.jpg' },
+      { name: 'Сет Самурай Люкс', price: '11990₸', ing: 'Королевский бэйкет, Жареный Цезарь, Суши бургер, Самурай, Сяке темпура', img: 'images/samuu.jpg' },
+    ]
+  },
+  combo: {
+    label: 'Комбо',
+    badge: 'Комбо',
+    type: 'grid',
+    items: [
+      { name: 'Комбо #1', price: '8200₸', ing: 'Цезарь жареный, Бонито запеченный, Cheese ролл, Пицца Цыпленок', img: 'images/co1.jpg' },
+      { name: 'Комбо #2', price: '10080₸', ing: 'Филадельфия, Hello Kitty, Самурай, Пицца 4 сыра', img: 'images/co2.jpg' },
+      { name: 'Комбо #3', price: '11060₸', ing: 'Филадельфия, Запеченная Филадельфия, Жареная Филадельфия, Пицца Пепперони', img: 'images/co3.jpg' },
+      { name: 'Комбо #4', price: '12390₸', ing: 'Королевский бэйкет, Поцелуй гейши, Канада, Калифорния с крабом, Пицца с курицей и грибами', img: 'images/co4.jpg' },
+    ]
+  },
+  fastfood: {
+    label: 'Фаст-фуд',
+    badge: 'Фаст-фуд',
+    type: 'list',
+    items: [
+      { name: 'Донер куриный', price: '1350₸', ing: '' },
+      { name: 'Донер куриный с сыром', price: '1550₸', ing: '' },
+      { name: 'Донер ассорти', price: '1550₸', ing: '' },
+      { name: 'Донер ассорти с сыром', price: '1650₸', ing: '' },
+      { name: 'Донер говяжий', price: '1400₸', ing: '' },
+      { name: 'Донер говяжий с сыром', price: '1750₸', ing: '' },
+      { name: 'Бургер куриный', price: '1370₸', ing: '' },
+      { name: 'Бургер говяжий', price: '1480₸', ing: '' },
+      { name: 'Фри бокс со стрипцами', price: '2390₸', ing: '' },
+      { name: 'Комбо бургер куриный', price: '2690₸', ing: 'Бургер куриный, фри, Coca-Cola 0.5л' },
+      { name: 'Комбо бургер говяжий', price: '2790₸', ing: 'Бургер говяжий, фри, Coca-Cola 0.5л' },
+      { name: 'Детское комбо', price: '1850₸', ing: 'Наггетсы, детский сок' },
+    ]
+  },
+  snacks: {
+    label: 'Тіскебасар / Закуски',
+    badge: 'Закуски',
+    type: 'grid',
+    items: [
+      { name: 'Картофель Фри', price: '690₸', ing: '', img: 'images/fr.jpg' },
+      { name: 'Дольки', price: '990₸', ing: '', img: 'images/do.jpg' },
+      { name: 'Сырные палочки', price: '1290₸', ing: '', img: 'images/sy.jpg' },
+      { name: 'Наггетсы', price: '1490₸', ing: '', img: 'images/na.jpg' },
+      { name: 'Чикен 7шт', price: '2590₸', ing: '', img: 'images/ch7.jpg' },
+      { name: 'Чикен 14шт', price: '3190₸', ing: '', img: 'images/ch14.jpg' },
+    ]
+  },
+  drinks: {
+    label: 'Барное меню / Напитки',
+    badge: 'Напитки',
+    type: 'drinks',
+    items: [
+      { name: '— Напитки —', price: '' },
+      { name: 'Детский сок «DaDa»', price: '360₸' },
+      { name: 'Сок Piko 1л', price: '1000₸' },
+      { name: 'Sprite (0.5л / 1л)', price: '600/800₸' },
+      { name: 'Fanta (0.5л / 1л)', price: '600/800₸' },
+      { name: 'Coca-Cola (0.5л / 1л)', price: '600/800₸' },
+      { name: 'Fuse Tea 1л', price: '800₸' },
+      { name: 'Bonaqua 1л', price: '600₸' },
+      { name: '— Лимонады (1 литр) —', price: '' },
+      { name: 'Лимонад Алмурт / Грушевый', price: '1700₸' },
+      { name: 'Лимонад Малиновый', price: '1700₸' },
+      { name: 'Лимонад Манго-Маракуйя', price: '1700₸' },
+      { name: 'Лимонад Санрайз', price: '1700₸' },
+      { name: 'Лимонад Облепиха-Манго', price: '1700₸' },
+      { name: '— Авторлық Шәйлар (0.7л) —', price: '' },
+      { name: 'Алтын Ширғаң (Золотая Облепиха)', price: '1400₸' },
+      { name: 'Таңқурай Тосабы (Малиновый Джем)', price: '1400₸' },
+      { name: 'Тропикалық Кеш (Тропический Вечер)', price: '1400₸' },
+      { name: 'Түрік Анары (Турецкий гранат)', price: '1400₸' },
+      { name: 'Балды Алмурт (Медовая груша)', price: '1400₸' },
+      { name: 'Ташкент Шайы (Ташкентский Чай)', price: '1390₸' },
+      { name: 'Сүт қосылған шай (Чай с молоком)', price: '1200₸' },
+      { name: '— Шоколад —', price: '' },
+      { name: 'Шоколад Kazakhstan', price: '1200₸' },
+      { name: 'Шоколад Alpen Gold', price: '1000₸' },
+      { name: 'Шоколад Roshen', price: '600₸' },
+      { name: 'Шоколад Roshen 43гр', price: '400₸' },
+    ]
+  }
+};
+
+// ── RENDER ──
+function makeId(name) {
+  return name.replace(/\s+/g,'_').replace(/[^a-zA-Zа-яА-Я0-9_]/g,'');
+}
+
+function renderCard(item) {
+  const id = makeId(item.name);
+  const inCart = cart[id] && cart[id].qty > 0;
+  return `
+    <div class="card">
+      ${item.img
+        ? `<img class="card-img" src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'">`
+        : `<div class="card-img-placeholder">🍣</div>`}
+      <div class="card-body">
+        <div class="card-name">${item.name}</div>
+        ${item.ing ? `<div class="card-ingredients">${item.ing}</div>` : ''}
+        <div class="card-footer">
+          <div class="card-price">${item.price}</div>
+          <div class="add-ctrl" data-item-id="${id}">
+            <button class="card-btn" style="${inCart ? 'display:none' : ''}" onclick="addItem('${id}','${item.name.replace(/'/g,"\\'")}','${item.price}')">+</button>
+            <div class="qty-ctrl ${inCart ? 'show' : ''}">
+              <button class="qty-btn minus" onclick="changeQty('${id}',-1)">−</button>
+              <span class="qty-num">${inCart ? cart[id].qty : 1}</span>
+              <button class="qty-btn" onclick="changeQty('${id}',1)">+</button>
+            </div>
           </div>
         </div>
       </div>
+    </div>`;
+}
 
-      <div class="footer-bottom">
-        <p>© 2024 SUSHIZZA. Все права защищены. Сделано с ❤️ в Актобе</p>
+function renderListCard(item) {
+  const id = makeId(item.name);
+  const inCart = cart[id] && cart[id].qty > 0;
+  return `
+    <div class="list-card">
+      <div>
+        <div class="list-card-name">${item.name}</div>
+        ${item.ing ? `<div class="list-card-sub">${item.ing}</div>` : ''}
       </div>
-    </footer>
+      <div class="list-card-right">
+        <div class="list-card-price">${item.price}</div>
+        <div class="add-ctrl" data-item-id="${id}">
+          <button class="card-btn" style="width:32px;height:32px;font-size:16px;${inCart ? 'display:none' : ''}" onclick="addItem('${id}','${item.name.replace(/'/g,"\\'")}','${item.price}')">+</button>
+          <div class="qty-ctrl ${inCart ? 'show' : ''}">
+            <button class="qty-btn minus" onclick="changeQty('${id}',-1)">−</button>
+            <span class="qty-num">${inCart ? cart[id].qty : 1}</span>
+            <button class="qty-btn" onclick="changeQty('${id}',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
 
-    <a
-      href="https://2gis.kz/aktobe/geo/70030076651218529/57.139108,50.270921"
-      target="_blank"
-      class="gis-float"
-      title="Открыть в 2ГИС"
-    >
- <img width="55px" src="./images/2gis.png"></img>
-    </a>
+function renderDrinkCard(item) {
+  // Section label (no price)
+  if (item.price === '') {
+    const label = item.name.replace(/^—\s*/, '').replace(/\s*—$/, '');
+    return `<div class="drink-section-label">${label}</div>`;
+  }
+  const id = makeId(item.name);
+  const inCart = cart[id] && cart[id].qty > 0;
+  return `
+    <div class="drink-card" style="align-items:center;gap:8px;">
+      <span class="drink-name">${item.name}</span>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <span class="drink-price">${item.price}</span>
+        <div class="add-ctrl" data-item-id="${id}">
+          <button class="card-btn" style="width:28px;height:28px;font-size:14px;${inCart ? 'display:none' : ''}" onclick="addItem('${id}','${item.name.replace(/'/g,"\\'")}','${item.price}')">+</button>
+          <div class="qty-ctrl ${inCart ? 'show' : ''}">
+            <button class="qty-btn minus" style="width:26px;height:26px;" onclick="changeQty('${id}',-1)">−</button>
+            <span class="qty-num" style="font-size:14px;">${inCart ? cart[id].qty : 1}</span>
+            <button class="qty-btn" style="width:26px;height:26px;" onclick="changeQty('${id}',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
 
-    <a
-      href="https://wa.me/77761587973"
-      target="_blank"
-      class="whatsapp-float"
-      id="whatsappBtn"
-    >
-      <svg viewBox="0 0 32 32">
-        <path
-          d="M16 0C7.164 0 0 7.163 0 16c0 2.825 0.737 5.607 2.138 8.099L0.747 30.88c-0.151 0.426 0.231 0.848 0.672 0.737l6.384-1.603C10.202 31.34 13.067 32 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-5.037-0.725-7.186-2.092l-0.461-0.294-4.696 1.179 1.192-4.459-0.347-0.525C2.803 21.052 2 18.562 2 16 2 8.268 8.268 2 16 2s14 6.268 14 14-6.268 13.333-14 13.333zm7.784-9.826c-0.428-0.214-2.528-1.247-2.921-1.39-0.393-0.143-0.679-0.214-0.964 0.214-0.286 0.428-1.107 1.39-1.357 1.676-0.25 0.286-0.5 0.321-0.929 0.107-0.428-0.214-1.808-0.667-3.443-2.126-1.272-1.135-2.132-2.537-2.382-2.965-0.25-0.428-0.027-0.659 0.188-0.872 0.192-0.192 0.428-0.5 0.643-0.75 0.214-0.25 0.286-0.428 0.428-0.714 0.143-0.286 0.071-0.536-0.036-0.75-0.107-0.214-0.964-2.322-1.321-3.179-0.348-0.835-0.701-0.722-0.964-0.735-0.25-0.012-0.536-0.015-0.821-0.015s-0.75 0.107-1.143 0.536c-0.393 0.428-1.5 1.464-1.5 3.571s1.536 4.143 1.75 4.429c0.214 0.286 3.018 4.607 7.313 6.461 1.022 0.441 1.821 0.705 2.443 0.903 1.029 0.327 1.965 0.281 2.705 0.17 0.825-0.123 2.528-1.036 2.886-2.036 0.357-1 0.357-1.857 0.25-2.036-0.107-0.179-0.393-0.286-0.821-0.5z"
-        />
-      </svg>
-    </a>
+function renderSection(key, section) {
+  const { label, badge, type, items } = section;
+  let body = '';
+  if (type === 'grid') {
+    body = `<div class="grid">${items.map(renderCard).join('')}</div>`;
+  } else if (type === 'list') {
+    body = `<div class="list-grid">${items.map(renderListCard).join('')}</div>`;
+  } else if (type === 'drinks') {
+    body = `<div class="drinks-grid">${items.map(renderDrinkCard).join('')}</div>`;
+  }
+  return `
+    <div class="section" id="sec-${key}">
+      <div class="section-header">
+        <span class="section-badge">${badge}</span>
+        <span class="section-title">${label}</span>
+        <div class="section-line"></div>
+      </div>
+      ${body}
+    </div>`;
+}
 
-    <script>
-      const products = {
-        cold: [
-          {
-            name: "Филадельфия",
-            price: "2790₸",
-            ingredients: "Рис, Нори, Творожный сыр, Лосось",
-            image: "images/philadelphia.jpg",
-          },
-          {
-            name: "Филадельфия Lux",
-            price: "2990₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Авокадо, Манго, Лосось, Спайси соус, Тобико красный, Ореховая стружка",
-            image: "images/philadelphia-lux.jpg",
-          },
-          {
-            name: "Калифорния с лососем",
-            price: "2790₸",
-            ingredients: "Рис, Нори, Лосось, Авокадо, Креветки, Тобико",
-            image: "images/california.jpg",
-          },
-          {
-            name: "Цезарь ролл",
-            price: "2490₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Айсберг, Помидоры, Куриный филе, Панко, Соус тар-тар, Пармезан",
-            image: "images/caesar.jpg",
-          },
-          {
-            name: "Бонита ролл",
-            price: "2490₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Огурец, Лосось, Стружка тунца",
-            image: "images/bonita.JPG",
-          },
-          {
-            name: "Капа маки",
-            price: "1390₸",
-            ingredients: "Рис, Нори, Огурец, Кунжут",
-            image: "images/kapa.JPG",
-          },
-          {
-            name: "Сяке маки",
-            price: "1390₸",
-            ingredients: "Рис, Нори, Лосось",
-            image: "images/sake.JPG",
-          },
-          {
-            name: "Эби маки",
-            price: "1390₸",
-            ingredients: "Рис, Нори, Креветки",
-            image: "images/ebi.JPG",
-          },
-          {
-            name: "Cheese ролл",
-            price: "2790₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Огурцы, Креветки, Сыр гауда, Соус сырный, Микро зелень",
-            image: "images/cheese.jpg",
-          },
-          {
-            name: "Канада ролл",
-            price: "2990₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Лосось, Огурец, Угорь, Соус унаги, Кунжут",
-            image: "images/canada.jpg",
-          },
-          {
-            name: "Вулкан ролл",
-            price: "2490₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Тунец, Огурец, Кунжут черный, Чука, Тобико красный",
-            image: "images/vulkan.jpg",
-          },
-          {
-            name: "Дракон ролл",
-            price: "2990₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Огурец, Снежный краб, Угорь, Соус унаги, Кунжут",
-            image: "images/dragon.jpg",
-          },
-                    {
-            name: "Прайм ролл",
-            price: "2990₸",
-            ingredients: " ",
-            image: "images/prime.jpg",
-          },
-        ],
-        baked: [
-          {
-            name: "Поцелуй гейши",
-            price: "2790₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Огурец, Лосось, Соус запеченный, Соус унаги, Кунжут",
-            image: "images/geisha.jpg",
-          },
-          {
-            name: "Горячий краб",
-            price: "2790₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Огурец, Снежный краб, Тобико красный, Кунжут, Соус унаги, Моцарелла",
-            image: "images/hot-crab.jpg",
-          },
-          {
-            name: "Королевский букет",
-            price: "3390₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Огурец, Креветки жареные, Лосось, Моцарелла, Соус запеченный, Соус унаги, Лук зелень, Тобико красный",
-            image: "images/royal.jpg",
-          },
-                    {
-            name: "Суши бургер",
-            price: "3490₸",
-            ingredients: " ",
-            image: "images/sushi-burger.jpg",
-          },
-        ],
-        fried: [
-          {
-            name: "Сяке темпура",
-            price: "2790₸",
-            ingredients:
-              "Рис, Нори, Огурец, Лосось, Кляр, Панко, Творожный сыр, Красная икра",
-            image: "images/sake-tempura.jpg",
-          },
-          {
-            name: "Самурай",
-            price: "2790₸",
-            ingredients:
-              "Рис, Нори, Огурец, Угорь, Кляр, Панко, Творожный сыр, Лук зелень",
-            image: "images/samurai.jpg",
-          },
-          {
-            name: "Америка",
-            price: "2790₸",
-            ingredients:
-              "Рис, Нори, Лосось, Угорь, Огурец, Творожный сыр, Кляр, Панко, Соус унаги, Кунжут",
-            image: "images/america.jpg",
-          },
-          {
-            name: "Камикадзе",
-            price: "2490₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Лосось, Лук зелень, Соус спайс, Кляр, Панко",
-            image: "images/kamikaze.JPG",
-          },
-          {
-            name: "Hello Kitty",
-            price: "2790₸",
-            ingredients:
-              "Рис, Маминори, Творожный сыр, Тобико, Лосось, Креветка, Огурец, Кляр, Панко",
-            image: "images/hello-kitty.jpg",
-          },
-          {
-            name: "Цезарь жареный",
-            price: "2490₸",
-            ingredients:
-              "Рис, Нори, Творожный сыр, Курица филе, Айсберг, Кляр, Панко, Соус тар-тар",
-            image: "images/caesar-fried.JPG",
-          },
-        ],
-        pizza: [
-          {
-            name: "Маргарита с помидорами",
-            price: "2590₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Помидор",
-            image: "images/margarita.jpg",
-          },
-          {
-            name: "Пепперони",
-            price: "2790₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Колбаса",
-            image: "images/pepperoni.jpg",
-          },
-          {
-            name: "Сальмоне",
-            price: "4590₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Черри, Копченая семга, Руккола",
-            image: "images/salmon-pizza.jpg",
-          },
-          {
-            name: "Пицца охотничья",
-            price: "2890₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Шампиньоны, Помидоры, Перец, Охотничьи колбаски",
-            image: "images/hunter.jpg",
-          },
-          {
-            name: "Пицца цыпленок",
-            price: "2690₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Куриное филе, Соус сырный",
-            image: "images/chicken-pizza.jpg",
-          },
-          {
-            name: "Пицца курица с грибами",
-            price: "2790₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Куриное филе, Шампиньоны, Соус тар-тар",
-            image: "images/chicken-mushroom.jpg",
-          },
-          {
-            name: "Пицца 4 сезона",
-            price: "2790₸",
-            ingredients:
-              "Тесто, Мути соус, Моцарелла, Гауда, Манная крупа, Куриное филе, Помидоры, Колбаса, Шампиньоны, Соус сырный",
-            image: "images/4seasons.jpg",
-          },
-                    {
-            name: "Пицца 4 сыра",
-            price: "3590₸",
-            ingredients:
-              " ",
-            image: "images/4syra.jpg",
-          },
-        ],
-        sets: [
-          {
-            name: "Классика №1",
-            price: "5590₸",
-            ingredients: "Цезарь жареный, Бонито, Кремо ролл",
-            image: "images/set-classic2.jpg",
-          },
-          {
-            name: "Токио Mix",
-            price: "6490₸",
-            ingredients: "Hello kitty, Самурай, Филадельфия",
-            image: "images/set-tokyo.jpg",
-          },
-          {
-            name: "U.S.A.",
-            price: "5190₸",
-            ingredients: "Жареный бургер с лососем, Америка, Саки маки",
-            image: "images/set-usa.jpg",
-          },
-          {
-            name: "Сет Нежность",
-            price: "6990₸",
-            ingredients: "Горячий карб, Самурай, Cheese ролл",
-            image: "images/nezhn.jpg",
-          },
-          {
-            name: "Сет Поцелуй Дракона",
-            price: "4990₸",
-            ingredients:
-              "Поцелуй гейши, Дракон ролл",
-            image: "images/draggon.jpg",
-          },
-          {
-            name: "Сет Легенда",
-            price: "9990₸",
-            ingredients:
-              "Королевский бэкид, Поцелуй гейши, Дракон ролл, Горячий краб",
-            image: "images/legend.jpg",
-          },
-          {
-            name: "Филаман",
-            price: "7090₸",
-            ingredients: "ЦПоцелуй гейши, Филадельфия, Филадельфия lux",
-            image: "images/fila.jpg",
-          },
-          {
-            name: "Самурай lux",
-            price: "11990₸",
-            ingredients: "Королевский букет, Самурай, Сяке темпура, Бургер с лососем, цезарь",
-            image: "images/luxx.jpg",
-          },
-        ],
-        snacks: [
-          {
-            name: "Картофель фри",
-            price: "690₸",
-            ingredients: "Картофель, Экстра соль, Паприка",
-            image: "images/fries.jpg",
-          },
-                    {
-            name: "Чикен 7шт",
-            price: "2590₸",
-            ingredients: "Chicken 7 штук",
-            image: "images/chicken.jpg",
-          },
-                    {
-            name: "Чикен 14шт",
-            price: "3190₸",
-            ingredients: "Chicken 14 штук",
-            image: "images/chicken.jpg",
-          },
-                              {
-            name: "Сырные палочки",
-            price: "1390₸",
-            ingredients: "",
-            image: "images/palo.jpg",
-          },
-                              {
-            name: "Дольки",
-            price: "990₸",
-            ingredients: "",
-            image: "images/dolki.jpg",
-          },
-        ],
-        drinks: [
-          {
-            name: "Coca-Cola 1л",
-            price: "800₸",
-            ingredients: "Газированный напиток",
-            image: "images/cola.webp",
-          },
-          {
-            name: "Sprite 1л",
-            price: "800₸",
-            ingredients: "Газированный напиток",
-            image: "images/sprite.png",
-          },
-          {
-            name: "Fanta 1л",
-            price: "800₸",
-            ingredients: "Газированный напиток",
-            image: "images/fanta.jpg",
-          },
-                    {
-            name: "Coca-Cola 0,5л",
-            price: "600₸",
-            ingredients: "Газированный напиток",
-            image: "images/cola.webp",
-          },
-          {
-            name: "Sprite 0,5л",
-            price: "600₸",
-            ingredients: "Газированный напиток",
-            image: "images/sprite.png",
-          },
-          {
-            name: "Fanta 0,5л",
-            price: "600₸",
-            ingredients: "Газированный напиток",
-            image: "images/fanta.jpg",
-          },
-          {
-            name: "Fuse Tea 1л",
-            price: "800₸",
-            ingredients: "Холодный чай",
-            image: "images/fuse-tea.webp",
-          },
-                    {
-            name: "Piko 1л",
-            price: "1000₸",
-            ingredients: "Негазированный напиток",
-            image: "images/piko.webp",
-          },
-                             {
-            name: "Piko 1л",
-            price: "1000₸",
-            ingredients: "Негазированный напиток",
-            image: "images/piko1.jpg",
-          },
-                             {
-            name: "Piko 1л",
-            price: "1000₸",
-            ingredients: "Негазированный напиток",
-            image: "images/piko2.jpg",
-          },
-                              {
-            name: "Bonaqua 1л",
-            price: "600₸",
-            ingredients: "Негазированная вода",
-            image: "images/bonaqua.webp",
-          },
-          
-        ],
-      };
+function render(cat) {
+  const el = document.getElementById('mainContent');
+  if (cat === 'all') {
+    el.innerHTML = Object.entries(data).map(([k,v]) => renderSection(k,v)).join('');
+  } else {
+    el.innerHTML = renderSection(cat, data[cat]);
+  }
+}
 
-      const categoryNames = {
-        cold: "🧊 Холодные роллы",
-        baked: "🔥 Запеченные роллы",
-        fried: "🍤 Жареные роллы",
-        pizza: "🍕 Пицца",
-        sets: "🎁 Сеты",
-        snacks: "🍗🍟 Chicken & фри",
-        drinks: "🥤 Напитки",
-      };
+document.getElementById('navTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.nav-tab');
+  if (!btn) return;
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  render(btn.dataset.cat);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
-      function renderProducts(category = "all") {
-        const content = document.getElementById("content");
-        content.innerHTML = "";
-
-        const categoriesToShow =
-          category === "all" ? Object.keys(products) : [category];
-
-        categoriesToShow.forEach((cat) => {
-          if (products[cat] && products[cat].length > 0) {
-            const section = document.createElement("div");
-            section.className = "category-section";
-            section.id = cat;
-
-            const title = document.createElement("h2");
-            title.className = "category-title";
-            title.textContent = categoryNames[cat];
-            section.appendChild(title);
-
-            const grid = document.createElement("div");
-            grid.className = "products-grid";
-
-            products[cat].forEach((product) => {
-              const card = document.createElement("div");
-              card.className = "product-card";
-
-              const isDrink = product.category === "drinks" || cat === "drinks";
-
-              card.innerHTML = `
-                        <div class="product">
-                            ${
-                                product.image
-                                ? `<img 
-                                    src="${product.image}" 
-                                    alt="${product.image}" 
-                                    class="product-image"
-                                    style="${isDrink ? 'width:400px; height:400px; object-fit:cover;' : ''}"
-                                    >`
-                                : ""
-                            }
-                            <div class="product-info">
-                                <div class="product-name">${product.name}</div>
-                                <div class="product-ingredients">${product.ingredients}</div>
-                                <div class="product-footer">
-                                <div class="product-price">${product.price}</div>
-                                <button class="add-button" onclick="addToWhatsApp('${product.name}', '${product.price}')">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        `;
-              grid.appendChild(card);
-            });
-
-            section.appendChild(grid);
-            content.appendChild(section);
-          }
-        });
-      }
-
-      function addToWhatsApp(name, price) {
-        const message = `Здравствуйте! Я хочу заказать:\n${name} - ${price}`;
-        const whatsappNumber = "77761587973";
-        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-          message
-        )}`;
-        window.open(url, "_blank");
-      }
-
-      document.getElementById("categoryTabs").addEventListener("click", (e) => {
-        if (e.target.classList.contains("category-tab")) {
-          document.querySelectorAll(".category-tab").forEach((tab) => {
-            tab.classList.remove("active");
-          });
-          e.target.classList.add("active");
-
-          const category = e.target.dataset.category;
-          renderProducts(category);
-        }
-      });
-
-      document.getElementById("whatsappBtn").addEventListener("click", (e) => {
-        e.preventDefault();
-        const whatsappNumber = "77761587973";
-        const message = "Здравствуйте! Хочу сделать заказ";
-        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-          message
-        )}`;
-        window.open(url, "_blank");
-      });
-
-      renderProducts();
-    </script>
-  </body>
+render('all');
+updateCartUI();
+</script>
+</body>
 </html>
